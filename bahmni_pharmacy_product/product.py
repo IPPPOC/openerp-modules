@@ -27,7 +27,7 @@ class product_template(models.Model):
         return super(product_template, self).write(cr, uid, ids, vals, context=context)
 
 class product_product(models.Model):
-    _inherit = 'product.product'
+    _inherit = 'product.template'
 
     uuid= fields.Char(string='UUID', size=64)
     drug=fields.Char(string='Drug Name', size=64)
