@@ -3,9 +3,9 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import time
 import uuid
-from tools.translate import _
-import decimal_precision as dp
-import netsvc
+#from tools.translate import _
+import openerp.addons.decimal_precision as dp
+from odoo import netsvc
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -29,16 +29,16 @@ class product_template(models.Model):
 class product_product(models.Model):
     _inherit = 'product.product'
 
-    'uuid': fields.char('UUID', size=64),
-    'drug':fields.char('Drug Name', size=64),
-    'manufacturer':fields.char('Manufacturer', size=64),
-    'mrp': fields.float('MRP', required=False, digits_compute= dp.get_precision('Product Price')),
-    'low_stock': fields.function(_check_low_stock, type="boolean", string="Low Stock", search=_search_low_stock),
-    'actual_stock': fields.function(_get_actual_stock, type="float", string="Actual Stock")
+    uuid= fields.Char(string='UUID', size=64),
+    drug=fields.Char(string='Drug Name', size=64),
+    manufacturer=fields.Char(string='Manufacturer', size=64),
+    mrp= fields.Float(string='MRP', required=False, digits_compute= dp.get_precision('Product Price')),
+    low_stock= fields.Function(_check_low_stock, type="boolean", string="Low Stock", search=_search_low_stock),
+    actual_stock= fields.Function(_get_actual_stock, type="float", string="Actual Stock")
 
-    #_defaults = {
-    #    'procure_method': 'make_to_stock'
-    #}
+    _defaults = {
+        'procure_method': 'make_to_stock'
+    }
 
     @api.model
     # extending this method from stock.product to list only unexpired products
