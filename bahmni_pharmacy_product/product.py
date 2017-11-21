@@ -29,12 +29,12 @@ class product_template(models.Model):
 class product_product(models.Model):
     _inherit = 'product.product'
 
-    uuid= fields.Char(string='UUID', size=64),
-    drug=fields.Char(string='Drug Name', size=64),
-    manufacturer=fields.Char(string='Manufacturer', size=64),
-    mrp= fields.Float(string='MRP', required=False, digits_compute= dp.get_precision('Product Price')),
-    low_stock= fields.Function(_check_low_stock, type="boolean", string="Low Stock", search=_search_low_stock),
-    actual_stock= fields.Function(_get_actual_stock, type="float", string="Actual Stock")
+    uuid= fields.Char(string='UUID', size=64)
+    drug=fields.Char(string='Drug Name', size=64)
+    manufacturer=fields.Char(string='Manufacturer', size=64)
+    mrp= fields.Float(string='MRP', required=False, digits_compute=dp.get_precision('Product Price'))
+    low_stock= fields.Char(compute="_check_low_stock", type="boolean", string="Low Stock", search='_search_low_stock')
+    actual_stock= fields.Float(compute="_get_actual_stock", type="float", string="Actual Stock")
 
     _defaults = {
         'procure_method': 'make_to_stock'
